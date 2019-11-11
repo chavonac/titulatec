@@ -22,7 +22,7 @@ Ext.define('app.views.registrosActosView', {
         {
             text: 'Prever',
             id: 'btnPreverRA'
-        },
+        }
     ],
     initComponent: function () {
         this.items = [{
@@ -32,7 +32,6 @@ Ext.define('app.views.registrosActosView', {
             defaults: {
                 margin: '0 10 0 10'
             },
-            scrollable: 'true',
             height: 550,
             items: [
                 {

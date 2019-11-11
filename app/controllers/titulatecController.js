@@ -51,7 +51,7 @@ Ext.define('app.controllers.titulatecController', {
     fnPrever: function () {
         var me = this,
             nombreReporte = 'ReportePrueba',
-            extension = 'pdf'
+            extension = 'pdf';
         parametrosReporte = {
             P_idSolicitud: 1
         };
@@ -62,11 +62,11 @@ Ext.define('app.controllers.titulatecController', {
         me.fnSetDescricpionCombo(cmb, record);
     },
     fnSetDescricpionCombo: function (cmb, record) {
-        cmb.nextNode().setValue(record.data[cmb.descValue])
+        cmb.nextNode().setValue(record.data[cmb.descValue]);
     },
     fnBlurCombo: function (cmb, record) {
         if (Ext.isEmpty(cmb.getValue())) {
-            cmb.reset()
+            cmb.reset();
             cmb.nextNode().reset();
         }
     },
@@ -80,7 +80,7 @@ Ext.define('app.controllers.titulatecController', {
             'nombreReporte=' + nombreReporte +
             '&extension=' + extension +
             '&parametrosReporte=' + Ext.encode(parametrosReporte)
-        )
+        );
     },
     fnUrlHost: function () {
         return 'http://localhost:8080';
