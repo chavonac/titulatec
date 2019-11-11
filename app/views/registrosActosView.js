@@ -33,9 +33,12 @@ Ext.define('app.views.registrosActosView', {
                 margin: '0 10 0 10'
             },
             scrollable: 'true',
-            height: 800,
+            height: 550,
             items: [
                 {
+                    xtype: 'hiddenfield',
+                    id: 'hfIdSolicitudes'
+                }, {
                     xtype: 'container',
                     layout: 'hbox',
                     items: [

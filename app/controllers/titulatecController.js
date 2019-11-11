@@ -1,7 +1,17 @@
+/*
+    validar si existe el alumno
+    validar situacion del alumno
+    adjunto la documentacion
+    Agender acto
+*/
+
 Ext.define('app.controllers.titulatecController', {
     extend: 'Ext.app.Controller',
     init: function () {
         this.control({
+            'registrosActos-main': {
+                afterrender: this.fnCargaPantalla,
+            },
             'registrosActos-main #btnGuardarRA': {
                 click: this.fnGuardar
             },
@@ -23,11 +33,14 @@ Ext.define('app.controllers.titulatecController', {
             }
         });
     },
+    fnCargaPantalla: function () {
+        console.log('Cargar pantalla')
+    },
     fnGuardar: function () {
         console.log('click guardar');
     },
     fnConsultar: function () {
-        console.log('click consultar');
+        this.fnCargaSolicitudes();
     },
     fnEliminar: function () {
         console.log('click eliminar');
@@ -36,7 +49,13 @@ Ext.define('app.controllers.titulatecController', {
         Ext.getCmp('formRA').reset();
     },
     fnPrever: function () {
-        console.log('click prever');
+        var me = this,
+            nombreReporte = 'ReportePrueba',
+            extension = 'pdf'
+        parametrosReporte = {
+            P_idSolicitud: 1
+        };
+        me.fnDescargaArchivo(nombreReporte, extension, parametrosReporte, me);
     },
     fnSelectCombo: function (cmb, record) {
         var me = this;
@@ -50,6 +69,24 @@ Ext.define('app.controllers.titulatecController', {
             cmb.reset()
             cmb.nextNode().reset();
         }
+    },
+    fnCargaSolicitudes: function () {
+        console.log('Carga Solicitud');
+    },
+    fnDescargaArchivo: function (nombreReporte, extension, parametrosReporte, me) {
+        window.open(me.fnUrlHost() +
+            me.fnUrlPath() +
+            '?' +
+            'nombreReporte=' + nombreReporte +
+            '&extension=' + extension +
+            '&parametrosReporte=' + Ext.encode(parametrosReporte)
+        )
+    },
+    fnUrlHost: function () {
+        return 'http://localhost:8080';
+    },
+    fnUrlPath: function () {
+        return '/TitulaTecRest/titulatec/recursosTitulatec/descargaReporte';
     }
 });
 
