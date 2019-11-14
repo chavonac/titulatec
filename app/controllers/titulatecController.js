@@ -1,16 +1,16 @@
 /*
-    validar si existe el alumno
-    validar situacion del alumno
-    adjunto la documentacion
-    Agender acto
-*/
+ validar si existe el alumno
+ validar situacion del alumno
+ adjunto la documentacion
+ Agender acto
+ */
 
 Ext.define('app.controllers.titulatecController', {
     extend: 'Ext.app.Controller',
-    init: function () {
+    init: function() {
         this.control({
             'registrosActos-main': {
-                afterrender: this.fnCargaPantalla,
+                boxready: this.fnCargaPantalla
             },
             'registrosActos-main #btnGuardarRA': {
                 click: this.fnGuardar
@@ -33,60 +33,61 @@ Ext.define('app.controllers.titulatecController', {
             }
         });
     },
-    fnCargaPantalla: function () {
-        console.log('Cargar pantalla')
+    fnCargaPantalla: function() {
+        console.log('Cargar pantalla');
+        Ext.getCmp('cmbSolicitudesRA').getStore().load();
+
     },
-    fnGuardar: function () {
+    fnGuardar: function() {
         console.log('click guardar');
     },
-    fnConsultar: function () {
-        this.fnCargaSolicitudes();
+    fnConsultar: function() {
     },
-    fnEliminar: function () {
+    fnEliminar: function() {
         console.log('click eliminar');
     },
-    fnLimpiar: function () {
+    fnLimpiar: function() {
         Ext.getCmp('formRA').reset();
     },
-    fnPrever: function () {
+    fnPrever: function() {
         var me = this,
-            nombreReporte = 'ReportePrueba',
-            extension = 'pdf';
+                nombreReporte = 'ReportePrueba',
+                extension = 'pdf';
         parametrosReporte = {
             P_idSolicitud: 1
         };
         me.fnDescargaArchivo(nombreReporte, extension, parametrosReporte, me);
     },
-    fnSelectCombo: function (cmb, record) {
+    fnSelectCombo: function(cmb, record) {
         var me = this;
         me.fnSetDescricpionCombo(cmb, record);
     },
-    fnSetDescricpionCombo: function (cmb, record) {
+    fnSetDescricpionCombo: function(cmb, record) {
         cmb.nextNode().setValue(record.data[cmb.descValue]);
     },
-    fnBlurCombo: function (cmb, record) {
+    fnBlurCombo: function(cmb, record) {
         if (Ext.isEmpty(cmb.getValue())) {
             cmb.reset();
             cmb.nextNode().reset();
         }
     },
-    fnCargaSolicitudes: function () {
+    fnCargaSolicitudes: function() {
         console.log('Carga Solicitud');
     },
-    fnDescargaArchivo: function (nombreReporte, extension, parametrosReporte, me) {
+    fnDescargaArchivo: function(nombreReporte, extension, parametrosReporte, me) {
         window.open(me.fnUrlHost() +
-            me.fnUrlPath() +
-            '?' +
-            'nombreReporte=' + nombreReporte +
-            '&extension=' + extension +
-            '&parametrosReporte=' + Ext.encode(parametrosReporte)
-        );
+                me.fnUrlPath('recursosTitulatec/descargaReporte') +
+                '?' +
+                'nombreReporte=' + nombreReporte +
+                '&extension=' + extension +
+                '&parametrosReporte=' + Ext.encode(parametrosReporte)
+                );
     },
-    fnUrlHost: function () {
+    fnUrlHost: function() {
         return 'http://localhost:8080';
     },
-    fnUrlPath: function () {
-        return '/TitulaTecRest/titulatec/recursosTitulatec/descargaReporte';
+    fnUrlPath: function(recurso) {
+        return '/TitulaTecRest/titulatec/' + recurso;
     }
 });
 

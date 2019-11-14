@@ -1,0 +1,11 @@
+{
+    "sucess": true,
+    "message": "Proceso realizado con exito",
+    "total": 1,
+    "data": [
+        {
+            "idSolitud": 1,
+            "noControl": 6010255
+        }
+    ]
+}
