@@ -9,7 +9,9 @@ Ext.application({
     ],
     stores: [
         'app.stores.solicitudesStore',
-        'app.stores.actosStore'
+        'app.stores.actosStore',
+        'app.stores.salasStore',
+        'app.stores.docentesStore'
     ],
     launch: function () {
         Ext.create('Ext.container.Viewport', {

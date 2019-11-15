@@ -8,9 +8,9 @@ Ext.define('app.models.actosModel', {
         {name: 'noDocenteP', type: 'int'},
         {name: 'noDocenteS', type: 'int'},
         {name: 'noDocenteV', type: 'int'},
-        {name: 'fechaPresentacion', type: 'date'},
-        {name: 'horaInicio', type: 'date'},
-        {name: 'horafin', type: 'date'},
+        {name: 'fechaPresentacion', type: 'string'},
+        {name: 'horaInicio', type: 'string'},
+        {name: 'horafin', type: 'string'},
         {name: 'dictamen', type: 'string'},
         {name: 'horafin', type: 'string'}
     ]

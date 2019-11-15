@@ -9,7 +9,9 @@ Ext.define('app.models.solicitudesModel', {
         {name: 'idOpcion', type: 'int'},
         {name: 'fechaElaboracion', type: 'date'},
         {name: 'nombreProyecto', type: 'string'},
-        {name: 'estatus', type: 'string'}
+        {name: 'estatus', type: 'string'},
+        /*******************CAMPOS EXTRA***********************/
+        {name: 'nombreProyecto', type: 'string'}
     ]
 });
 

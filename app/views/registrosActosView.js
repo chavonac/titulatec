@@ -1,7 +1,8 @@
 
 Ext.define('app.views.registrosActosView', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.form.Panel',
     xtype: 'registrosActos-main',
+    id: 'frmRegistrosActos',
     tbar: [
         {
             text: 'Guardar',
@@ -12,10 +13,6 @@ Ext.define('app.views.registrosActosView', {
             id: 'btnConsultarRA'
         },
         {
-            text: 'Eliminar',
-            id: 'btnEliminarRA'
-        },
-        {
             text: 'Limpiar',
             id: 'btnLimpiarRA'
         },
@@ -24,7 +21,7 @@ Ext.define('app.views.registrosActosView', {
             id: 'btnPreverRA'
         }
     ],
-    initComponent: function() {
+    initComponent: function () {
         this.items = [{
                 xtype: 'form',
                 id: 'formRA',
@@ -50,16 +47,16 @@ Ext.define('app.views.registrosActosView', {
                                 labelAlign: 'top',
                                 displayField: 'idSolicitud',
                                 valueField: 'idSolicitud',
-                                descValue: 'descripcion',
+                                descValue: 'nombreProyecto',
                                 tpl: Ext.create('Ext.XTemplate',
                                         "<tpl for='.'>",
-                                        "<div class='x-boundlist-item combo'>{noEmpleado} - {alumno.noControl}</div>",
+                                        "<div class='x-boundlist-item combo'>{noEmpleado} - {noControl}</div>",
                                         "</tpl>"
                                         )
                             }, {
                                 xtype: 'textfield',
                                 id: 'txtSolicitudesRA',
-                                name: 'descSolicitud',
+                                name: 'nombreProyecto',
                                 flex: 1,
                                 margin: '30 0 0 5',
                                 readOnly: true,
@@ -71,7 +68,7 @@ Ext.define('app.views.registrosActosView', {
                         layout: 'hbox',
                         defaults: {
                             xtype: 'fieldset',
-                            height: 260
+                            height: 310
                         },
                         items: [
                             {
@@ -125,9 +122,17 @@ Ext.define('app.views.registrosActosView', {
                                         items: [
                                             {
                                                 id: 'cmbSalaRA',
-                                                name: 'sala',
+                                                name: 'idSala',
                                                 fieldLabel: 'Sala',
-                                                store: ''
+                                                store: 'app.stores.salasStore',
+                                                valueField: 'idSala',
+                                                displayField: 'cveSala',
+                                                descValue: 'descripcion',
+                                                tpl: Ext.create('Ext.XTemplate',
+                                                        "<tpl for='.'>",
+                                                        "<div class='x-boundlist-item combo'>{cveSala} - {descripcion}</div>",
+                                                        "</tpl>"
+                                                        )
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtSalaRA',
@@ -144,28 +149,36 @@ Ext.define('app.views.registrosActosView', {
                                         },
                                         items: [
                                             {
-                                                id: 'cmbDictamenRA',
-                                                name: 'dictamen',
-                                                fieldLabel: 'Dictamen',
-                                                store: datosDictamen(),
+                                                id: 'cmbEstatusRA',
+                                                name: 'estatus',
+                                                fieldLabel: 'Estatus',
+                                                store: datosEstatus(),
                                                 queryMode: 'local',
-                                                displayField: 'cveDictamen',
-                                                valueField: 'cveDictamen',
+                                                displayField: 'cveEstatus',
+                                                valueField: 'cveEstatus',
                                                 descValue: 'descripcion',
                                                 tpl: Ext.create('Ext.XTemplate',
                                                         "<tpl for='.'>",
-                                                        "<div class='x-boundlist-item combo'>{cveDictamen} - {descripcion}</div>",
+                                                        "<div class='x-boundlist-item combo'>{cveEstatus} - {descripcion}</div>",
                                                         "</tpl>"
                                                         )
                                             }, {
                                                 xtype: 'textfield',
-                                                id: 'txtDictamenRA',
+                                                id: 'txtEstatusRA',
                                                 flex: 1,
                                                 margin: '30 0 0 5',
                                                 readOnly: true,
                                                 submitValue: false
                                             }
                                         ]
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        labelAlign: 'top',
+                                        fieldLabel: 'Dictamen',
+                                        id: 'txtDictamenRA',
+                                        flex: 1,
+                                        width: '100%'
                                     }
                                 ]
                             }, {
@@ -185,9 +198,17 @@ Ext.define('app.views.registrosActosView', {
                                         items: [
                                             {
                                                 id: 'cmbPresidenteRA',
-                                                name: 'presidente',
+                                                name: 'noDocenteP',
                                                 fieldLabel: 'Presidente',
-                                                store: ''
+                                                store: 'app.stores.docentesStore',
+                                                valueField: 'noDocente',
+                                                displayField: 'noDocente',
+                                                descValue: 'nombre',
+                                                tpl: Ext.create('Ext.XTemplate',
+                                                        "<tpl for='.'>",
+                                                        "<div class='x-boundlist-item combo'>{noDocente} - {nombre}</div>",
+                                                        "</tpl>"
+                                                        )
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtPresidenteRA',
@@ -202,9 +223,17 @@ Ext.define('app.views.registrosActosView', {
                                         items: [
                                             {
                                                 id: 'cmbSecretarioRA',
-                                                name: 'secretario',
+                                                name: 'noDocenteS',
                                                 fieldLabel: 'Secretario',
-                                                store: ''
+                                                store: 'app.stores.docentesStore',
+                                                valueField: 'noDocente',
+                                                displayField: 'noDocente',
+                                                descValue: 'nombre',
+                                                tpl: Ext.create('Ext.XTemplate',
+                                                        "<tpl for='.'>",
+                                                        "<div class='x-boundlist-item combo'>{noDocente} - {nombre}</div>",
+                                                        "</tpl>"
+                                                        )
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtSecretarioRA',
@@ -219,9 +248,17 @@ Ext.define('app.views.registrosActosView', {
                                         items: [
                                             {
                                                 id: 'cmbVocalRA',
-                                                name: 'vocal',
+                                                name: 'noDocenteV',
                                                 fieldLabel: 'vocal',
-                                                store: ''
+                                                store: 'app.stores.docentesStore',
+                                                valueField: 'noDocente',
+                                                displayField: 'noDocente',
+                                                descValue: 'nombre',
+                                                tpl: Ext.create('Ext.XTemplate',
+                                                        "<tpl for='.'>",
+                                                        "<div class='x-boundlist-item combo'>{noDocente} - {nombre}</div>",
+                                                        "</tpl>"
+                                                        )
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtVocalRA',
@@ -238,45 +275,46 @@ Ext.define('app.views.registrosActosView', {
                         ]
                     }, {
                         xtype: 'grid',
+                        id: 'grdActos',
                         title: 'Actos registrados',
-                        store: Ext.data.Store.create(),
+                        store: 'app.stores.actosStore',
                         height: 400,
                         columns: [
                             {
                                 text: 'No. Solicitud',
                                 width: 120,
-                                dataIndex: ''
+                                dataIndex: 'idSolicitud'
                             }, {
                                 text: 'Alumno',
                                 width: 400,
-                                dataIndex: ''
+                                dataIndex: 'alumno'
                             }, {
                                 text: 'Opci&oacute;n de titulaci&oacute;n',
                                 width: 160,
-                                dataIndex: ''
+                                dataIndex: 'opcionTitulacion'
                             }, {
                                 text: 'Fecha',
                                 width: 120,
-                                dataIndex: ''
+                                dataIndex: 'fechaPresentacion'
                             }, {
-                                text: 'Hora entrada',
+                                text: 'Hora inicio',
                                 width: 120,
-                                dataIndex: ''
+                                dataIndex: 'horaInicio'
                             }, {
                                 text: 'Hora fin',
                                 width: 120,
-                                dataIndex: ''
+                                dataIndex: 'horaFin'
                             }, {
                                 text: 'Sala',
                                 width: 250,
-                                dataIndex: ''
+                                dataIndex: 'sala'
                             }, {
                                 text: 'Dictamen',
                                 width: 120,
-                                dataIndex: ''
+                                dataIndex: 'dictamen'
                             }, {
                                 text: 'Estatus',
-                                dataIndex: ''
+                                dataIndex: 'estatus'
                             }, {
                                 text: 'Ver revisores',
                                 width: 120,
@@ -288,14 +326,14 @@ Ext.define('app.views.registrosActosView', {
             }];
         this.callParent();
 
-        function datosDictamen() {
+        function datosEstatus() {
             return Ext.create('Ext.data.Store', {
                 autoLoad: true,
-                fields: ['cveDictamen', 'descripcion'],
+                fields: ['cveEstatus', 'descripcion'],
                 data: [
-                    {"cveDictamen": "P", "descripcion": "Pendiente"},
-                    {"cveDictamen": "A", "descripcion": "Aprobado"},
-                    {"cveDictamen": "R", "descripcion": "Reprobado"}
+                    {"cveEstatus": "P", "descripcion": "Pendiente"},
+                    {"cveEstatus": "A", "descripcion": "Aprobado"},
+                    {"cveEstatus": "R", "descripcion": "Reprobado"}
                 ]
             })
         }

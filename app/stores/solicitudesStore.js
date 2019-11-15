@@ -6,7 +6,6 @@ Ext.define('app.stores.solicitudesStore', {
     proxy       : {
         type    : 'ajax',
         root    : 'data',
-//        api     : {read : 'http://localhost:8082/TitulaTecRest/titulatec/solicitudes/solicitudesAprobadas'},
         reader  : {
             type            : 'json',
             rootProperty    : 'data',

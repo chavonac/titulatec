@@ -27,24 +27,52 @@ Ext.define('app.controllers.titulatecController', {
             'registrosActos-main #btnPreverRA': {
                 click: this.fnPrever
             },
-            'registrosActos-main #cmbDictamenRA': {
+            'registrosActos-main #cmbEstatusRA, #cmbSolicitudesRA, #cmbSalaRA, #cmbPresidenteRA, #cmbSecretarioRA, #cmbVocalRA': {
                 select: this.fnSelectCombo,
                 blur: this.fnBlurCombo
+            },
+            'registrosActos-main #grdActos': {
+                select: this.seleccionaRegistroGrid
             }
         });
     },
     fnCargaPantalla: function () {
         var me = this;
         console.log('Cargar pantalla');
-        var store = Ext.getCmp('cmbSolicitudesRA').getStore();
-        this.fnStoreUrl(store, 'solicitudes.solicitudesAprobadas', me);
-        store.load();
+        var storeSolicitudes = Ext.getCmp('cmbSolicitudesRA').getStore();
+        this.fnStoreUrl(storeSolicitudes, 'solicitudes.solicitudesAprobadas', me);
+        storeSolicitudes.load();
+
+        var storeSalas = Ext.getCmp('cmbSalaRA').getStore();
+        this.fnStoreUrl(storeSalas, 'salas.consultaSalasDisponibles', me);
+        storeSalas.load();
+
+        var storeDocenteP = Ext.getCmp('cmbPresidenteRA').getStore();
+        this.fnStoreUrl(storeDocenteP, 'docentes.consultaDocentesActivos', me);
+        storeDocenteP.load();
+
+        var storeDocenteS = Ext.getCmp('cmbSecretarioRA').getStore();
+        this.fnStoreUrl(storeDocenteS, 'solicitudes.consultaDocentesActivos', me);
+        storeDocenteS.load();
+
+        var storeDocenteV = Ext.getCmp('cmbVocalRA').getStore();
+        this.fnStoreUrl(storeDocenteV, 'solicitudes.consultaDocentesActivos', me);
+        storeDocenteV.load();
 
     },
     fnGuardar: function () {
         console.log('click guardar');
     },
     fnConsultar: function () {
+        var me = this,
+                store = Ext.getCmp('grdActos').getStore();
+        if (!Ext.isEmpty(Ext.getCmp('cmbSolicitudesRA').getValue())) {
+            var param = '?idSolicitud=' + Ext.getCmp('cmbSolicitudesRA').getValue();
+            this.fnStoreUrl(store, 'actos.consultaActos', me, param);
+        } else {
+            this.fnStoreUrl(store, 'actos.consultaActos', me);
+        }
+        store.load();
     },
     fnEliminar: function () {
         console.log('click eliminar');
@@ -93,7 +121,7 @@ Ext.define('app.controllers.titulatecController', {
         return Ext.isDefined(recurso) ? ('/TitulaTecRest/titulatec/' + recurso) : '/TitulaTecRest/titulatec';
     },
 
-    fnStoreUrl: function (store, url, me) {
+    fnStoreUrl: function (store, url, me, params) {
         var proxy = store.getProxy(),
                 ruta,
                 mod,
@@ -106,9 +134,9 @@ Ext.define('app.controllers.titulatecController', {
         } else {
             mod = url;
         }
-        proxy.setUrl(me.fnGetRestUrl(mod, tpl, me));
+        proxy.setUrl(me.fnGetRestUrl(mod, tpl, me, params));
     },
-    fnGetRestUrl: function (modulo, template, me) {
+    fnGetRestUrl: function (modulo, template, me, params) {
         var url = me.fnUrlHost() + me.fnUrlPath();
         url += '/';
 
@@ -117,7 +145,13 @@ Ext.define('app.controllers.titulatecController', {
         } else {
             url = url + modulo + '/' + template;
         }
+        if (Ext.isDefined(params)) {
+            url = url + params;
+        }
         return url;
+    },
+    seleccionaRegistroGrid: function (thiss, record) {
+      Ext.getCmp('frmRegistrosActos').getForm().loadRecord(record);
     }
 });
 

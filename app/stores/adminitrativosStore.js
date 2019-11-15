@@ -6,7 +6,6 @@ Ext.define('app.stores.adminitrativosStore', {
     proxy       : {
         type    : 'ajax',
         root    : 'data',
-//        api     : {read : '/' + mx.com.lobos.util.form.getAplication() + '/ConsultaRolesFuncionesStore.x'},
         reader  : {
             type            : 'json',
             rootProperty    : 'data',
