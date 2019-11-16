@@ -34,8 +34,11 @@ Ext.define('app.controllers.titulatecController', {
             'registrosActos-main #grdActos': {
                 select: this.seleccionaRegistroGrid
             },
-            'registrosActos-main #tmHoraInicioRA': {
-                change: this.selectHora
+            'registrosActos-main #tmHoraInicioRA, #tmHoraFinRA': {
+                change: this.configConsultaSalas
+            },
+            'registrosActos-main #dfFechaRA': {
+                select: this.configConsultaSalas
             }
         });
     },
@@ -201,7 +204,7 @@ Ext.define('app.controllers.titulatecController', {
         params.emailAdministrativo = Ext.getCmp('cmbSolicitudesRA').getSelection().data.emailAdministrativo;
         return params;
     },
-    selectHora: function () {
+    configConsultaSalas: function () {
         var storeSalas = Ext.getCmp('cmbSalaRA').getStore();
         cargaComboSalas(storeSalas);
     }
@@ -215,7 +218,8 @@ function cargaComboSalas(storeSalas) {
     storeSalas.load({
         params: {
             fechaPresentacion: Ext.Date.format(Ext.getCmp('dfFechaRA').getValue(), 'Y-m-d'),
-            horaInicio: Ext.Date.format(Ext.getCmp('tmHoraInicioRA').getValue(), "H:i:s")
+            horaInicio: Ext.Date.format(Ext.getCmp('tmHoraInicioRA').getValue(), "H:i:s"),
+            horaFin: Ext.Date.format(Ext.getCmp('tmHoraFinRA').getValue(), "H:i:s")
         }
     });
 }
