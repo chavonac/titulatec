@@ -1,8 +1,7 @@
 
 Ext.define('app.views.registrosActosView', {
-    extend: 'Ext.form.Panel',
+    extend: 'Ext.panel.Panel',
     xtype: 'registrosActos-main',
-    id: 'frmRegistrosActos',
     tbar: [
         {
             text: 'Guardar',
@@ -33,7 +32,8 @@ Ext.define('app.views.registrosActosView', {
                 items: [
                     {
                         xtype: 'hiddenfield',
-                        id: 'hfIdSolicitudes'
+                        id: 'txtIdActo',
+                        name: 'idActo',
                     }, {
                         xtype: 'container',
                         layout: 'hbox',
@@ -87,7 +87,7 @@ Ext.define('app.views.registrosActosView', {
                                             {
                                                 xtype: 'datefield',
                                                 id: 'dfFechaRA',
-                                                name: 'fecha',
+                                                name: 'fechaPresentacion',
                                                 fieldLabel: 'fecha',
                                                 value: new Date(),
                                                 format: 'd M Y'
@@ -136,6 +136,7 @@ Ext.define('app.views.registrosActosView', {
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtSalaRA',
+                                                name: 'sala',
                                                 flex: 1,
                                                 margin: '30 0 0 5',
                                                 readOnly: true,
@@ -150,7 +151,7 @@ Ext.define('app.views.registrosActosView', {
                                         items: [
                                             {
                                                 id: 'cmbEstatusRA',
-                                                name: 'estatus',
+                                                name: 'cveEstatus',
                                                 fieldLabel: 'Estatus',
                                                 store: datosEstatus(),
                                                 queryMode: 'local',
@@ -165,6 +166,7 @@ Ext.define('app.views.registrosActosView', {
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtEstatusRA',
+                                                name: 'estatus',
                                                 flex: 1,
                                                 margin: '30 0 0 5',
                                                 readOnly: true,
@@ -178,7 +180,8 @@ Ext.define('app.views.registrosActosView', {
                                         fieldLabel: 'Dictamen',
                                         id: 'txtDictamenRA',
                                         flex: 1,
-                                        width: '100%'
+                                        width: '100%',
+                                        name: 'dictamen'
                                     }
                                 ]
                             }, {
@@ -212,7 +215,7 @@ Ext.define('app.views.registrosActosView', {
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtPresidenteRA',
-                                                name: 'nombrePresidente',
+                                                name: 'nombreDocenteP',
                                                 flex: 1,
                                                 margin: '30 0 0 5',
                                                 readOnly: true,
@@ -237,7 +240,7 @@ Ext.define('app.views.registrosActosView', {
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtSecretarioRA',
-                                                name: 'nombreSecretario',
+                                                name: 'nombreDocenteS',
                                                 flex: 1,
                                                 margin: '30 0 0 5',
                                                 readOnly: true,
@@ -262,7 +265,7 @@ Ext.define('app.views.registrosActosView', {
                                             }, {
                                                 xtype: 'textfield',
                                                 id: 'txtVocalRA',
-                                                name: 'nombreVocal',
+                                                name: 'nombreDocenteV',
                                                 flex: 1,
                                                 margin: '30 0 0 5',
                                                 readOnly: true,
@@ -315,11 +318,7 @@ Ext.define('app.views.registrosActosView', {
                             }, {
                                 text: 'Estatus',
                                 dataIndex: 'estatus'
-                            }, {
-                                text: 'Ver revisores',
-                                width: 120,
-                                dataIndex: ''
-                            },
+                            }
                         ]
                     }
                 ]
@@ -332,8 +331,9 @@ Ext.define('app.views.registrosActosView', {
                 fields: ['cveEstatus', 'descripcion'],
                 data: [
                     {"cveEstatus": "P", "descripcion": "Pendiente"},
-                    {"cveEstatus": "A", "descripcion": "Aprobado"},
-                    {"cveEstatus": "R", "descripcion": "Reprobado"}
+                    {"cveEstatus": "A", "descripcion": "Autorizado"},
+                    {"cveEstatus": "R", "descripcion": "Realizado"},
+                    {"cveEstatus": "C", "descripcion": "Cancelado"}
                 ]
             })
         }

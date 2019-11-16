@@ -61,7 +61,16 @@ Ext.define('app.controllers.titulatecController', {
 
     },
     fnGuardar: function () {
-        console.log('click guardar');
+        var me = this,
+                idActo = Ext.getCmp('txtIdActo').getValue(),
+                operacion = 'actos' + (Ext.isEmpty(idActo) ? '/insertaActo' : '/actualizaActo'),
+                params = {};
+        params = me.setParams();
+        Ext.Ajax.request({
+            headers: {'Content-Type': 'application/json'},
+            url: me.fnGetRestUrl(operacion, '', me),
+            params: Ext.encode(params)
+        });
     },
     fnConsultar: function () {
         var me = this,
@@ -78,7 +87,8 @@ Ext.define('app.controllers.titulatecController', {
         console.log('click eliminar');
     },
     fnLimpiar: function () {
-        Ext.getCmp('formRA').reset();
+        Ext.getCmp('formRA').reset()
+        Ext.getCmp('grdActos').getStore().removeAll();
     },
     fnPrever: function () {
         var me = this,
@@ -151,7 +161,36 @@ Ext.define('app.controllers.titulatecController', {
         return url;
     },
     seleccionaRegistroGrid: function (thiss, record) {
-      Ext.getCmp('frmRegistrosActos').getForm().loadRecord(record);
+        Ext.getCmp('formRA').getForm().loadRecord(record);
+        Ext.getCmp('tmHoraInicioRA').setValue(Ext.Date.parse(record.data.horaInicio, "H:i:s"));
+        Ext.getCmp('tmHoraFinRA').setValue(Ext.Date.parse(record.data.horaFin, "H:i:s"));
+    },
+    setParams:function(){
+        var params = {};
+        params.idActo = Ext.getCmp('txtIdActo').getValue();
+        params.idSolicitud = Ext.getCmp('cmbSolicitudesRA').getValue();
+        params.idSala = Ext.getCmp('cmbSalaRA').getValue();
+        params.noDocenteP = Ext.getCmp('cmbPresidenteRA').getValue();
+        params.nombreDocenteP = Ext.getCmp('txtPresidenteRA').getValue();
+        params.emailDocenteP = Ext.getCmp('cmbPresidenteRA').getSelection().data.email;
+        params.noDocenteS = Ext.getCmp('cmbSecretarioRA').getValue();
+        params.nombreDocenteS = Ext.getCmp('txtSecretarioRA').getValue();
+        params.emailDocenteS = Ext.getCmp('cmbSecretarioRA').getSelection().data.email;
+        params.noDocenteV = Ext.getCmp('cmbVocalRA').getValue();
+        params.nombreDocenteV = Ext.getCmp('txtVocalRA').getValue();
+        params.emailDocenteV = Ext.getCmp('cmbVocalRA').getSelection().data.email;
+        params.fechaPresentacion = Ext.Date.format(Ext.getCmp('dfFechaRA').getValue(), 'Y-m-d');
+        params.horaInicio = Ext.Date.format(Ext.getCmp('tmHoraInicioRA').getValue(), "H:i:s");
+        params.horaFin = Ext.Date.format(Ext.getCmp('tmHoraFinRA').getValue(), "H:i:s");
+        params.dictamen = Ext.getCmp('txtDictamenRA').getValue();
+        params.estatus = Ext.getCmp('cmbEstatusRA').getValue();
+        params.nombreProyecto = Ext.getCmp('cmbSolicitudesRA').getSelection().data.nombreProyecto;
+        params.noControl = Ext.getCmp('cmbSolicitudesRA').getSelection().data.noControl;
+        params.nombreAlumno = Ext.getCmp('cmbSolicitudesRA').getSelection().data.nombreAlumno;
+        params.emailAlumno = Ext.getCmp('cmbSolicitudesRA').getSelection().data.emailAlumno;
+        params.nombreAdministrativo = Ext.getCmp('cmbSolicitudesRA').getSelection().data.nombreAdministrativo;
+        params.emailAdministrativo = Ext.getCmp('cmbSolicitudesRA').getSelection().data.emailAdministrativo;
+        return params;
     }
 });
 
