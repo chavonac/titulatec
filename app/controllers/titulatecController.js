@@ -33,6 +33,9 @@ Ext.define('app.controllers.titulatecController', {
             },
             'registrosActos-main #grdActos': {
                 select: this.seleccionaRegistroGrid
+            },
+            'registrosActos-main #tmHoraInicioRA': {
+                change: this.selectHora
             }
         });
     },
@@ -40,23 +43,24 @@ Ext.define('app.controllers.titulatecController', {
         var me = this;
         console.log('Cargar pantalla');
         var storeSolicitudes = Ext.getCmp('cmbSolicitudesRA').getStore();
-        this.fnStoreUrl(storeSolicitudes, 'solicitudes.solicitudesAprobadas', me);
+        me.fnStoreUrl(storeSolicitudes, 'solicitudes.solicitudesAprobadas', me);
         storeSolicitudes.load();
 
         var storeSalas = Ext.getCmp('cmbSalaRA').getStore();
-        this.fnStoreUrl(storeSalas, 'salas.consultaSalasDisponibles', me);
-        storeSalas.load();
+        me.fnStoreUrl(storeSalas, 'salas.consultaSalasDisponibles', me);
+
+        cargaComboSalas(storeSalas);
 
         var storeDocenteP = Ext.getCmp('cmbPresidenteRA').getStore();
-        this.fnStoreUrl(storeDocenteP, 'docentes.consultaDocentesActivos', me);
+        me.fnStoreUrl(storeDocenteP, 'docentes.consultaDocentesActivos', me);
         storeDocenteP.load();
 
         var storeDocenteS = Ext.getCmp('cmbSecretarioRA').getStore();
-        this.fnStoreUrl(storeDocenteS, 'solicitudes.consultaDocentesActivos', me);
+        me.fnStoreUrl(storeDocenteS, 'solicitudes.consultaDocentesActivos', me);
         storeDocenteS.load();
 
         var storeDocenteV = Ext.getCmp('cmbVocalRA').getStore();
-        this.fnStoreUrl(storeDocenteV, 'solicitudes.consultaDocentesActivos', me);
+        me.fnStoreUrl(storeDocenteV, 'solicitudes.consultaDocentesActivos', me);
         storeDocenteV.load();
 
     },
@@ -170,7 +174,7 @@ Ext.define('app.controllers.titulatecController', {
         Ext.getCmp('tmHoraInicioRA').setValue(Ext.Date.parse(record.data.horaInicio, "H:i:s"));
         Ext.getCmp('tmHoraFinRA').setValue(Ext.Date.parse(record.data.horaFin, "H:i:s"));
     },
-    setParams:function(){
+    setParams: function () {
         var params = {};
         params.idActo = Ext.getCmp('txtIdActo').getValue();
         params.idSolicitud = Ext.getCmp('cmbSolicitudesRA').getValue();
@@ -196,10 +200,23 @@ Ext.define('app.controllers.titulatecController', {
         params.nombreAdministrativo = Ext.getCmp('cmbSolicitudesRA').getSelection().data.nombreAdministrativo;
         params.emailAdministrativo = Ext.getCmp('cmbSolicitudesRA').getSelection().data.emailAdministrativo;
         return params;
+    },
+    selectHora: function () {
+        var storeSalas = Ext.getCmp('cmbSalaRA').getStore();
+        cargaComboSalas(storeSalas);
     }
 });
 
-
 function msj(mensaje) {
     Ext.Msg.alert('Titulatec', mensaje, Ext.emptyFn);
-};
+}
+;
+function cargaComboSalas(storeSalas) {
+    storeSalas.load({
+        params: {
+            fechaPresentacion: Ext.Date.format(Ext.getCmp('dfFechaRA').getValue(), 'Y-m-d'),
+            horaInicio: Ext.Date.format(Ext.getCmp('tmHoraInicioRA').getValue(), "H:i:s")
+        }
+    });
+}
+;
