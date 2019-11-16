@@ -104,7 +104,7 @@ Ext.define('app.controllers.titulatecController', {
                     nombreReporte = 'actoProfesional',
                     extension = 'pdf',
                     parametrosReporte = {
-                        P_idSolicitud: seleccionado[0].data.idActo
+                        P_idActo: seleccionado[0].data.idActo
                     };
             me.fnDescargaArchivo(nombreReporte, extension, parametrosReporte, me);
         } else {
