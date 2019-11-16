@@ -87,7 +87,7 @@ Ext.define('app.controllers.titulatecController', {
         console.log('click eliminar');
     },
     fnLimpiar: function () {
-        Ext.getCmp('formRA').reset()
+        Ext.getCmp('formRA').reset();
         Ext.getCmp('grdActos').getStore().removeAll();
     },
     fnPrever: function () {
