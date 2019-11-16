@@ -91,13 +91,18 @@ Ext.define('app.controllers.titulatecController', {
         Ext.getCmp('grdActos').getStore().removeAll();
     },
     fnPrever: function () {
-        var me = this,
-                nombreReporte = 'ReportePrueba',
-                extension = 'pdf';
-        parametrosReporte = {
-            P_idSolicitud: 1
-        };
-        me.fnDescargaArchivo(nombreReporte, extension, parametrosReporte, me);
+        var seleccionado = Ext.getCmp('grdActos').getSelection();
+        if (!Ext.isEmpty(seleccionado)) {
+            var me = this,
+                    nombreReporte = 'actoProfesional',
+                    extension = 'pdf',
+                    parametrosReporte = {
+                        P_idSolicitud: seleccionado[0].data.idActo
+                    };
+            me.fnDescargaArchivo(nombreReporte, extension, parametrosReporte, me);
+        } else {
+            msj('Debe de seleccionar un acto de la lista.');
+        }
     },
     fnSelectCombo: function (cmb, record) {
         var me = this;
@@ -125,7 +130,7 @@ Ext.define('app.controllers.titulatecController', {
                 );
     },
     fnUrlHost: function () {
-        return 'http://localhost:8082';
+        return 'http://localhost:8080';
     },
     fnUrlPath: function (recurso) {
         return Ext.isDefined(recurso) ? ('/TitulaTecRest/titulatec/' + recurso) : '/TitulaTecRest/titulatec';
@@ -194,3 +199,7 @@ Ext.define('app.controllers.titulatecController', {
     }
 });
 
+
+function msj(mensaje) {
+    Ext.Msg.alert('Titulatec', mensaje, Ext.emptyFn);
+};
