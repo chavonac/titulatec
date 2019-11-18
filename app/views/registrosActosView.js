@@ -16,11 +16,23 @@ Ext.define('app.views.registrosActosView', {
             id: 'btnLimpiarRA'
         },
         {
-            text: 'Prever',
-            id: 'btnPreverRA'
+            xtype: 'splitbutton',
+            text: 'reportes',
+            menu: [
+                {
+                    text: 'Acto profesional',
+                    id: 'reporte1',
+                    reporte: 'actoProfesional'
+                }, {
+                     text: 'Integracion de jurado',
+                     id: 'reporte2',
+                    reporte: 'integracionAprobacioJurado'
+                }
+            ]
         }
+
     ],
-    initComponent: function () {
+    initComponent: function() {
         this.items = [{
                 xtype: 'form',
                 id: 'formRA',

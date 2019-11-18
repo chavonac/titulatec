@@ -24,7 +24,7 @@ Ext.define('app.controllers.titulatecController', {
             'registrosActos-main #btnLimpiarRA': {
                 click: this.fnLimpiar
             },
-            'registrosActos-main #btnPreverRA': {
+            'registrosActos-main #reporte1, #reporte2': {
                 click: this.fnPrever
             },
             'registrosActos-main #cmbEstatusRA, #cmbSolicitudesRA, #cmbSalaRA, #cmbPresidenteRA, #cmbSecretarioRA, #cmbVocalRA': {
@@ -44,7 +44,7 @@ Ext.define('app.controllers.titulatecController', {
     },
     fnCargaPantalla: function() {
         var me = this;
-        me.fnLogin();
+//        me.fnLogin();
         var storeSolicitudes = Ext.getCmp('cmbSolicitudesRA').getStore();
         me.fnStoreUrl(storeSolicitudes, 'solicitudes.solicitudesAprobadas', me);
         storeSolicitudes.load();
@@ -97,11 +97,11 @@ Ext.define('app.controllers.titulatecController', {
         Ext.getCmp('formRA').reset();
         Ext.getCmp('grdActos').getStore().removeAll();
     },
-    fnPrever: function() {
+    fnPrever: function(btn) {
         var seleccionado = Ext.getCmp('grdActos').getSelection();
         if (!Ext.isEmpty(seleccionado)) {
             var me = this,
-                    nombreReporte = 'actoProfesional',
+                    nombreReporte = btn.reporte,
                     extension = 'pdf',
                     parametrosReporte = {
                         P_idActo: seleccionado[0].data.idActo
