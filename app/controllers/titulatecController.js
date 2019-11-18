@@ -7,7 +7,7 @@
 
 Ext.define('app.controllers.titulatecController', {
     extend: 'Ext.app.Controller',
-    init: function () {
+    init: function() {
         this.control({
             'registrosActos-main': {
                 boxready: this.fnCargaPantalla
@@ -42,9 +42,9 @@ Ext.define('app.controllers.titulatecController', {
             }
         });
     },
-    fnCargaPantalla: function () {
+    fnCargaPantalla: function() {
         var me = this;
-        console.log('Cargar pantalla');
+        me.fnLogin();
         var storeSolicitudes = Ext.getCmp('cmbSolicitudesRA').getStore();
         me.fnStoreUrl(storeSolicitudes, 'solicitudes.solicitudesAprobadas', me);
         storeSolicitudes.load();
@@ -67,7 +67,7 @@ Ext.define('app.controllers.titulatecController', {
         storeDocenteV.load();
 
     },
-    fnGuardar: function () {
+    fnGuardar: function() {
         var me = this,
                 idActo = Ext.getCmp('txtIdActo').getValue(),
                 operacion = 'actos' + (Ext.isEmpty(idActo) ? '/insertaActo' : '/actualizaActo'),
@@ -79,7 +79,7 @@ Ext.define('app.controllers.titulatecController', {
             params: Ext.encode(params)
         });
     },
-    fnConsultar: function () {
+    fnConsultar: function() {
         var me = this,
                 store = Ext.getCmp('grdActos').getStore();
         if (!Ext.isEmpty(Ext.getCmp('cmbSolicitudesRA').getValue())) {
@@ -90,14 +90,14 @@ Ext.define('app.controllers.titulatecController', {
         }
         store.load();
     },
-    fnEliminar: function () {
+    fnEliminar: function() {
         console.log('click eliminar');
     },
-    fnLimpiar: function () {
+    fnLimpiar: function() {
         Ext.getCmp('formRA').reset();
         Ext.getCmp('grdActos').getStore().removeAll();
     },
-    fnPrever: function () {
+    fnPrever: function() {
         var seleccionado = Ext.getCmp('grdActos').getSelection();
         if (!Ext.isEmpty(seleccionado)) {
             var me = this,
@@ -111,23 +111,23 @@ Ext.define('app.controllers.titulatecController', {
             msj('Debe de seleccionar un acto de la lista.');
         }
     },
-    fnSelectCombo: function (cmb, record) {
+    fnSelectCombo: function(cmb, record) {
         var me = this;
         me.fnSetDescricpionCombo(cmb, record);
     },
-    fnSetDescricpionCombo: function (cmb, record) {
+    fnSetDescricpionCombo: function(cmb, record) {
         cmb.nextNode().setValue(record.data[cmb.descValue]);
     },
-    fnBlurCombo: function (cmb, record) {
+    fnBlurCombo: function(cmb, record) {
         if (Ext.isEmpty(cmb.getValue())) {
             cmb.reset();
             cmb.nextNode().reset();
         }
     },
-    fnCargaSolicitudes: function () {
+    fnCargaSolicitudes: function() {
         console.log('Carga Solicitud');
     },
-    fnDescargaArchivo: function (nombreReporte, extension, parametrosReporte, me) {
+    fnDescargaArchivo: function(nombreReporte, extension, parametrosReporte, me) {
         window.open(me.fnUrlHost() +
                 me.fnUrlPath('recursosTitulatec/descargaReporte') +
                 '?' +
@@ -136,14 +136,13 @@ Ext.define('app.controllers.titulatecController', {
                 '&parametrosReporte=' + Ext.encode(parametrosReporte)
                 );
     },
-    fnUrlHost: function () {
+    fnUrlHost: function() {
         return 'http://localhost:8080';
     },
-    fnUrlPath: function (recurso) {
+    fnUrlPath: function(recurso) {
         return Ext.isDefined(recurso) ? ('/TitulaTecRest/titulatec/' + recurso) : '/TitulaTecRest/titulatec';
     },
-
-    fnStoreUrl: function (store, url, me, params) {
+    fnStoreUrl: function(store, url, me, params) {
         var proxy = store.getProxy(),
                 ruta,
                 mod,
@@ -158,7 +157,7 @@ Ext.define('app.controllers.titulatecController', {
         }
         proxy.setUrl(me.fnGetRestUrl(mod, tpl, me, params));
     },
-    fnGetRestUrl: function (modulo, template, me, params) {
+    fnGetRestUrl: function(modulo, template, me, params) {
         var url = me.fnUrlHost() + me.fnUrlPath();
         url += '/';
 
@@ -172,12 +171,12 @@ Ext.define('app.controllers.titulatecController', {
         }
         return url;
     },
-    seleccionaRegistroGrid: function (thiss, record) {
+    seleccionaRegistroGrid: function(thiss, record) {
         Ext.getCmp('formRA').getForm().loadRecord(record);
         Ext.getCmp('tmHoraInicioRA').setValue(Ext.Date.parse(record.data.horaInicio, "H:i:s"));
         Ext.getCmp('tmHoraFinRA').setValue(Ext.Date.parse(record.data.horaFin, "H:i:s"));
     },
-    setParams: function () {
+    setParams: function() {
         var params = {};
         params.idActo = Ext.getCmp('txtIdActo').getValue();
         params.idSolicitud = Ext.getCmp('cmbSolicitudesRA').getValue();
@@ -204,9 +203,57 @@ Ext.define('app.controllers.titulatecController', {
         params.emailAdministrativo = Ext.getCmp('cmbSolicitudesRA').getSelection().data.emailAdministrativo;
         return params;
     },
-    configConsultaSalas: function () {
+    configConsultaSalas: function() {
         var storeSalas = Ext.getCmp('cmbSalaRA').getStore();
         cargaComboSalas(storeSalas);
+    },
+    fnLogin: function() {
+        var me = this,
+                login = Ext.create('Ext.window.Window', {
+                    title: 'Titulatec - login',
+                    height: 220,
+                    width: 400,
+                    modal: true,
+                    closable: false,
+                    defaults: {
+                        xtype: 'textfield',
+                        labelAlign: 'top',
+                        width: '95%',
+                        margin: '0 5 0 10'
+                    },
+                    items: [
+                        {
+                            id: 'txtCorreo',
+                            fieldLabel: 'Correo',
+                            vtype: 'email'
+                        }, {
+                            id: 'txtPassword',
+                            fieldLabel: 'Password',
+                            inputType: 'password'
+                        }
+                    ],
+                    bbar: [
+                        '->',
+                        {
+                            text: 'Aceptar',
+                            handler: function() {
+                                Ext.Ajax.request({
+                                    headers: {'Content-Type': 'application/json'},
+                                    url: me.fnUrlHost() + '/TitulaTecRest/titulatec/usuarios/validaUsuario?correo=' + Ext.getCmp('txtCorreo').getValue() + '&password=' + Ext.getCmp('txtPassword').getValue(),
+                                    success: function(operation, request) {
+                                        var res = Ext.decode(operation.responseText);
+                                        if (res.total > 0) {
+                                            msj('Bienvenido');
+                                            login.close();
+                                        } else {
+                                            msj('Correo o password incorrecto.');
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    ]
+                }).show();
     }
 });
 
