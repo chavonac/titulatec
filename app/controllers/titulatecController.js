@@ -44,7 +44,7 @@ Ext.define('app.controllers.titulatecController', {
     },
     fnCargaPantalla: function() {
         var me = this;
-//        me.fnLogin();
+        me.fnLogin();
         var storeSolicitudes = Ext.getCmp('cmbSolicitudesRA').getStore();
         me.fnStoreUrl(storeSolicitudes, 'solicitudes.solicitudesAprobadas', me);
         storeSolicitudes.load();
@@ -128,13 +128,13 @@ Ext.define('app.controllers.titulatecController', {
         console.log('Carga Solicitud');
     },
     fnDescargaArchivo: function(nombreReporte, extension, parametrosReporte, me) {
-        window.open(me.fnUrlHost() +
+        window.open(encodeURI(me.fnUrlHost() +
                 me.fnUrlPath('recursosTitulatec/descargaReporte') +
                 '?' +
                 'nombreReporte=' + nombreReporte +
                 '&extension=' + extension +
-                '&parametrosReporte=' + Ext.encode(parametrosReporte)
-                );
+                '&parametrosReporte=' + JSON.stringify(parametrosReporte)
+                ));
     },
     fnUrlHost: function() {
         return 'http://localhost:8080';
